@@ -1,0 +1,37 @@
+server:
+  port: 8888
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin123
+    url: jdbc:mysql://localhost:3306/auto_rental?useSSL=false&serverTimezone=Asia/Shanghai
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: Asia/Shanghai
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      date-time: yyyy-MM-dd HH:mm:ss
+    path match:
+      matching-strategy: ant_path_matcher
+  data:
+    redis:
+      host: 192.168.213.4
+      port: 6379
+      database: 0
+      connect-timeout: 10000
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.rental.auto_rental.entity
+  global-config:
+    db-config:
+      logic-delete-field: deleted # 逻辑删除对应的数据库表字段
+encoder:
+  ctype:
+    strength: 6
+    secret: ${random.uuid}
+request:
+  url: /auto_rental/user/login
