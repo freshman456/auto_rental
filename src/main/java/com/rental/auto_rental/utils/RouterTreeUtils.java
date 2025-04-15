@@ -46,6 +46,7 @@ public class RouterTreeUtils {
                             ));
                             List<RouteVo> children = buildRouteVoList(permissionList, permission.getId());
                             routeVo.setChildren(children);
+
                             routeVoList.add(routeVo);
                         }
                 );

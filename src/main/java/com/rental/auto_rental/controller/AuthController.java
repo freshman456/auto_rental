@@ -18,9 +18,11 @@ import com.rental.auto_rental.vo.TokenVo;
 import com.rental.auto_rental.vo.UserInfoVo;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,10 +85,12 @@ public class AuthController {
             return Result.fail().setMessage("认证信息为空");
         }
         User user = (User) authentication.getPrincipal();
-        List<String> roleNames = userService.getRoleNameByUserId(user.getId());
-        Object[] array = roleNames.toArray();
-//        Object[] array = user.getPermissionList().stream()
-//                .filter(Objects::nonNull).map(Permission::getPermissionCode).toArray();
+//        List<String> roleNames = userService.getRoleNameByUserId(user.getId());
+//        Object[] array = roleNames.toArray();
+
+        Object[] array = user.getPermissionList().stream()
+                .filter(Objects::nonNull).map(Permission::getPermissionCode).toArray();
+
         UserInfoVo userInfoVo = new UserInfoVo(user.getId(),user.getUsername(),
                 user.getAvatar(),user.getNickname(),array);
         return Result.success().setData(userInfoVo).setMessage("获取用户信息成功");
@@ -101,8 +105,29 @@ public class AuthController {
         User user = (User) authentication.getPrincipal();
         List<Permission> permissionList = user.getPermissionList();
         //将permission_type为2的按钮移除，不需要生成对应的菜单
-        permissionList.removeIf(permission -> Objects.equals(permission.getPermissionCode(), 2));
+        permissionList.removeIf(permission -> Objects.equals(permission.getPermissionType(), 2));
         List<RouteVo> routeVos = RouterTreeUtils.buildRouteVoList(permissionList, 0);
         return Result.success().setData(routeVos).setMessage("获取菜单成功!");
+    }
+
+    @PostMapping("/logout")
+    public Result logout(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getHeader("token");
+        if (token == null || token.isEmpty()) {
+            token = request.getParameter("token");
+        }
+        if(token==null||token.isEmpty()){
+            throw new CustomerAuthentication("token异常");
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        if(userDetails!=null){
+            redisUtils.delete("token:"+token);
+            SecurityContextLogoutHandler handler = new
+                    SecurityContextLogoutHandler();
+            handler.logout(request,response,authentication);
+            return  Result.success().setMessage("退出成功");
+        }
+        return Result.fail().setMessage("退出失败");
     }
 }

@@ -86,7 +86,7 @@ public class VerifyTokenFilter extends OncePerRequestFilter {
         }
         String tokenKey = "token:" + token;
         String tokenRedis = redisUtils.get(tokenKey);
-        if (token==null||tokenRedis.isEmpty()) {
+        if (tokenRedis==null||tokenRedis.isEmpty()) {
             throw new CustomerAuthentication("token已过期");
         }
         if (!tokenRedis.equals(token)) {
