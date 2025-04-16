@@ -1,7 +1,9 @@
 package com.rental.auto_rental.mapper;
 
-import com.rental.auto_rental.entity.SysDept;
+import com.rental.auto_rental.entity.Dept;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 
 /**
@@ -12,7 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author YinHang
  * @since 2025-04-12
  */
-public interface SysDeptMapper extends BaseMapper<SysDept> {
-
+public interface DeptMapper extends BaseMapper<Dept> {
 }
 

@@ -1,18 +1,23 @@
 package com.rental.auto_rental.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author YinHang
@@ -24,7 +29,7 @@ import lombok.experimental.Accessors;
 @TableName("sys_dept")
 @Accessors(chain = true)
 @ApiModel(value = "SysDept对象", description = "")
-public class SysDept implements Serializable {
+public class Dept implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -76,4 +81,7 @@ public class SysDept implements Serializable {
      */
     @ApiModelProperty("是否删除")
     private Boolean deleted;
+
+    @TableField(exist = false)
+    List<Dept> children;
 }

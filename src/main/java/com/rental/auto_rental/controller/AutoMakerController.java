@@ -1,5 +1,6 @@
 package com.rental.auto_rental.controller;
 
+import com.rental.auto_rental.entity.AutoBrand;
 import com.rental.auto_rental.entity.AutoMaker;
 import com.rental.auto_rental.service.IAutoMakerService;
 import com.rental.auto_rental.utils.PinYinUtils;
@@ -58,5 +59,9 @@ public class AutoMakerController {
         autoMaker.setOrderLetter(PinYinUtils.getPinYinHeadChar(autoMaker.getName()));
         return autoMakerService.updateById(autoMaker) ? Result.success() :
                 Result.fail();
+    }
+    @GetMapping
+    public Result getAll() {
+        return Result.success().setData(autoMakerService.list());
     }
 }

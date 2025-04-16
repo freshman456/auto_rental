@@ -34,7 +34,7 @@ public class CustomerAccessDeny implements AccessDeniedHandler {
         ServletOutputStream outputStream = response.getOutputStream();
         String result = JSON.toJSONString(Result.fail().setMessage("无权访问"));
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
-        outputStream.close();
+//        outputStream.flush();
+//        outputStream.close();
     }
 }

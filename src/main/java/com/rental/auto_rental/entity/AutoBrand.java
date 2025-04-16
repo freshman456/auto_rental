@@ -1,6 +1,7 @@
 package com.rental.auto_rental.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -52,4 +53,8 @@ public class AutoBrand implements Serializable {
      */
     @ApiModelProperty("是否删除")
     private Boolean deleted;
+
+    @TableField(exist = false)
+    private String makerName;
+
 }

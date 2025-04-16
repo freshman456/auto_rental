@@ -31,7 +31,7 @@ public class CustomerAnonymous implements AuthenticationEntryPoint {
         String result = JSON.toJSONString(Result.fail().setCode(ResultCode.UNAUTHORIZED)
                 .setMessage("匿名用户无权访问"));
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
-        outputStream.close();
+//        outputStream.flush();
+//        outputStream.close();
     }
 }

@@ -2,6 +2,7 @@ package com.rental.auto_rental.utils;
 
 import com.rental.auto_rental.entity.Permission;
 import com.rental.auto_rental.vo.RouteVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.RouteMatcher;
 
 import java.util.ArrayList;
@@ -51,5 +52,18 @@ public class RouterTreeUtils {
                         }
                 );
         return routeVoList;
+    }
+
+    public static List<Permission> buildMenuTree(List<Permission> menuList, int pid) {
+        List<Permission> menuTree = new ArrayList<>();
+        Optional.ofNullable(menuList).orElse(new ArrayList<>())
+                .stream().filter(menu -> menu != null && menu.getPid() == pid)
+                .forEach(menu -> {
+                    Permission menu1 = new Permission();
+                    BeanUtils.copyProperties(menu, menu1);
+                    menu1.setChildren(buildMenuTree(menuList, menu.getId()));
+                    menuTree.add(menu1);
+                });
+        return menuTree;
     }
 }
